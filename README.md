@@ -1,66 +1,64 @@
+# Resumind — AI-Powered Resume Analyzer
 
-# 🧠 ATS App — AI-Powered Applicant Tracking System
+An AI-powered web application that analyzes resumes against real job postings, delivering ATS scores, structured feedback, and actionable recommendations to increase your chances of getting past automated screening processes.
 
-A full-stack AI-powered resume analyzer built with React, React Router v7, TypeScript, and Puter.js. Upload your resume, get real-time AI feedback, and track your job applications — all in one place.
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat&logo=typescript&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-7-CA4245?style=flat&logo=reactrouter&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
 
-> 🚧 **Work in progress** — actively being built.
-
----
-
-## ✨ Features
-
-- 🔐 **Authentication** via Puter.js (no backend required)
-- 📄 **Resume Upload** — PDF support with file uploader component
-- 🤖 **AI Feedback** — detailed analysis powered by Puter's AI API
-- 📊 **Score Breakdown** — overall score + categories: ATS, Tone & Style, Content, Structure, Skills
-- 🖼️ **PDF to Image Conversion** — visual preview of uploaded resumes
-- 🗂️ **Application Tracker** — view all your submitted resumes and ratings
-- ☁️ **Cloud Storage** — files stored via Puter.js, no external database needed
-- 🚀 **Deployed with Puter** — serverless deployment
+**[Live Demo](https://your-deployment-url.vercel.app)** · **[Portfolio](https://portfolio-sooty-five-67.vercel.app)**
 
 ---
 
-## 🛠️ Tech Stack
+## Overview
 
-| Technology | Purpose |
-|---|---|
-| React 19 | UI framework |
-| React Router v7 | File-based routing & navigation |
-| TypeScript | Type safety |
-| Tailwind CSS | Styling |
-| Puter.js | Auth, cloud storage & AI |
-| Vite | Build tool |
+Resumind lets users upload a PDF resume, provide a job description, and receive detailed AI-generated feedback scored across multiple dimensions: ATS compatibility, tone & style, content quality, structure, and skills alignment.
+
+The app stores resumes and feedback persistently using Puter.js — a client-side cloud platform — meaning there is no backend infrastructure to maintain.
 
 ---
 
-## 📁 Project Structure
+## Features
 
-```
-app/
-├── components/        # Reusable UI components
-│   ├── Navbar.tsx
-│   ├── ResumeCard.tsx
-│   └── ScoreCircle.tsx
-├── routes/            # File-based routes (React Router v7)
-│   ├── home.tsx
-│   ├── auth.tsx
-│   └── ...
-├── lib/
-│   └── puter.ts       # Puter.js store & integration
-├── constants.ts       # Shared constants & AI prompt config
-└── types/             # TypeScript interfaces
-```
+- **AI Resume Analysis** — Sends resume content and job description to an LLM, receives structured JSON feedback with scores and actionable tips per category
+- **ATS Score** — Dedicated score measuring how well the resume performs against Applicant Tracking Systems
+- **Resume Dashboard** — Score distribution chart (Recharts), average score, top score, and best/worst resume highlights
+- **PDF Preview** — Converts uploaded PDFs to images client-side for in-browser preview without a server
+- **Delete Resume** — Individual resume deletion with optimistic UI update, no page reload
+- **Persistent Storage** — Resumes and feedback stored in Puter KV store and filesystem, surviving page refreshes
+- **Dark Theme** — Custom design system built with Tailwind CSS v4 `@theme` tokens
 
 ---
 
-## 🚀 Getting Started
+## Tech Stack
 
-### Prerequisites
+| Layer | Technology | Why |
+|---|---|---|
+| Framework | React 19 + React Router v7 | File-based routing, loaders, type-safe params |
+| Language | TypeScript | End-to-end type safety including API responses |
+| Styling | Tailwind CSS v4 | `@theme` custom tokens for a consistent design system |
+| Cloud/Auth | Puter.js | Client-side auth, KV store, filesystem — no backend needed |
+| AI | Puter AI (LLM) | Resume analysis and structured feedback generation |
+| Charts | Recharts | Score distribution visualization |
+| PDF | pdf.js | Client-side PDF to image conversion |
+| Deployment | Vercel | Zero-config deployment with React Router v7 |
 
-- Node.js 18+
-- npm or yarn
+---
 
-### Installation
+## Architecture Decisions
+
+**No backend.** Puter.js provides authentication, a key-value store, and a filesystem entirely client-side. This eliminates infrastructure costs and deployment complexity while keeping user data isolated per account.
+
+**Structured AI output.** The AI prompt explicitly requests JSON with a defined schema. The app parses and validates the response before storing it, preventing UI crashes from malformed feedback.
+
+**Client-side PDF conversion.** PDFs are converted to images in the browser using pdf.js before upload. This allows resume preview without storing rendered images server-side, and gives users an instant visual confirmation of what was analyzed.
+
+**Optimistic UI on delete.** Resume cards are removed from state immediately on delete click, before the async operations complete. This makes the interaction feel instant even if the underlying KV/filesystem calls are slow.
+
+---
+
+## Getting Started
 
 ```bash
 # Clone the repository
@@ -68,57 +66,78 @@ git clone https://github.com/Renzo-rifos/ATS-App.git
 cd ATS-App
 
 # Install dependencies
-npm install
+pnpm install
 
-# Start the dev server
-npm run dev
+# Start the development server
+pnpm dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+No environment variables required — Puter.js handles auth and storage through its own SDK.
 
 ---
 
-## 🤖 AI Feedback Format
+## Project Structure
 
-The AI analyzes resumes across 5 categories and returns structured JSON feedback:
+```
+app/
+├── routes/                # Pages
+│   ├── home.tsx           # Resume list & delete
+│   ├── upload.tsx         # Upload form & AI trigger
+│   ├── resume.tsx         # Feedback detail view
+│   ├── dashboard.tsx      # Stats, chart, best/worst
+│   └── auth.tsx           # Puter authentication
+├── components/            # Reusable UI
+│   ├── ResumeCard.tsx     # Card with delete button
+│   ├── Summary.tsx        # Score overview + gauge
+│   ├── ATS.tsx            # ATS score breakdown
+│   ├── Details.tsx        # Accordion feedback per category
+│   └── ScoreCircle.tsx    # Circular score indicator
+├── lib/
+│   ├── puter.ts           # Puter.js store & integration
+│   └── pdf2img.ts         # Client-side PDF to image conversion
+├── constants/             # AI prompt instructions
+└── types/                 # Shared TypeScript interfaces
+```
+
+---
+
+## AI Feedback Format
+
+The AI prompt explicitly requests structured JSON, which is validated before storing to prevent UI crashes from malformed responses:
 
 ```ts
 interface Feedback {
-  overallScore: number;       // 0–100
-  ATS: { score: number; tips: Tip[] };
+  overallScore: number;
+  ATS:          { score: number; tips: Tip[] };
   toneAndStyle: { score: number; tips: Tip[] };
-  content: { score: number; tips: Tip[] };
-  structure: { score: number; tips: Tip[] };
-  skills: { score: number; tips: Tip[] };
+  content:      { score: number; tips: Tip[] };
+  structure:    { score: number; tips: Tip[] };
+  skills:       { score: number; tips: Tip[] };
+}
+
+interface Tip {
+  type:        "good" | "improve";
+  tip:         string;
+  explanation: string;
 }
 ```
 
-Each tip includes a `type` (`"good"` or `"improve"`), a short title, and a detailed explanation.
+---
+
+## Lighthouse Scores
+
+Measured on the auth page in incognito mode:
+
+| Metric | Score |
+|---|---|
+| Performance | 98 |
+| Accessibility | 90 |
+| Best Practices | 100 |
+| SEO | 100 |
 
 ---
 
-## 📌 Roadmap
+## Author
 
-- [x] Project setup & routing 
-- [x] Homepage & Resume Card
-- [x] Authentication with Puter.js
-- [x] Upload form & file uploader
-- [ ] PDF to image conversion
-- [ ] AI feedback integration
-- [ ] Resume feedback page
-- [ ] Fetch real data from Puter storage
-- [ ] Deployment
-
----
-
-## 👤 Author
-
-**Ezequiel Rifos**
-- GitHub: [@Renzo-rifos](https://github.com/Renzo-rifos)
-- LinkedIn: [rifos-ezequiel](https://linkedin.com/in/rifos-ezequiel)
-
----
-
-## 📄 License
-
-MIT
+**Renzo Ezequiel Rifos** — Frontend Developer  
+[GitHub](https://github.com/Renzo-rifos) · [LinkedIn](https://linkedin.com/in/rifos-ezequiel) · [Portfolio](https://portfolio-sooty-five-67.vercel.app)
