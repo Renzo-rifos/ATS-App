@@ -102,7 +102,7 @@ Each tip includes a `type` (`"good"` or `"improve"`), a short title, and a detai
 - [x] Project setup & routing 
 - [x] Homepage & Resume Card
 - [x] Authentication with Puter.js
-- [ ] Upload form & file uploader
+- [x] Upload form & file uploader
 - [ ] PDF to image conversion
 - [ ] AI feedback integration
 - [ ] Resume feedback page
