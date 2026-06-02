@@ -7,7 +7,7 @@ An AI-powered web application that analyzes resumes against real job postings, d
 ![React Router](https://img.shields.io/badge/React_Router-7-CA4245?style=flat&logo=reactrouter&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
 
-**[Live Demo](https://your-deployment-url.vercel.app)** · **[Portfolio](https://portfolio-sooty-five-67.vercel.app)**
+**[Live Demo](https://ats-app-kappa.vercel.app/auth?next=/)** · **[Portfolio](https://portfolio-sooty-five-67.vercel.app)**
 
 ---
 
