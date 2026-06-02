@@ -350,7 +350,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
           ],
         },
       ],
-      { model: "claude-sonnet-4" }
+      { model: "gpt-4o-mini" }
     ) as Promise<AIResponse | undefined>;
   };
 
@@ -387,8 +387,10 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       setError("Puter.js not available");
       return;
     }
-    return puter.kv.delete(key);
-  };
+    // Workaround: puter.kv.delete is not implemented in runtime
+    // Overwrite with empty string and filter on read
+    return puter.kv.set(key, "");
+};
 
   const listKV = async (pattern: string, returnValues?: boolean) => {
     const puter = getPuter();
