@@ -42,8 +42,9 @@ export default function Home() {
   };
   
   return (
-    <main className="bg-gradient">
+    <>
       <Navbar />
+    <main className="bg-gradient">
 
       <section className="main-section">
         <div className="page-heading py-16">
@@ -80,5 +81,6 @@ export default function Home() {
         )}
       </section>
     </main>
+    </>
   );
 }
