@@ -89,7 +89,7 @@ export const resumes: Resume[] = [
       },
     },
   },
-    {
+  {
     id: "4",
     companyName: "Google",
     jobTitle: "Frontend Developer",
@@ -234,14 +234,18 @@ export const prepareInstructions = ({
   jobDescription: string;
 }) =>
   `You are an expert in ATS (Applicant Tracking System) and resume analysis.
-  Please analyze and rate this resume and suggest how to improve it.
-  The rating can be low if the resume is bad.
-  Be thorough and detailed. Don't be afraid to point out any mistakes or areas for improvement.
-  If there is a lot to improve, don't hesitate to give low scores. This is to help the user to improve their resume.
-  If available, use the job description for the job user is applying to to give more detailed feedback.
-  If provided, take the job description into consideration.
+  Analyze the attached resume against the job below and suggest how to improve it.
   The job title is: ${jobTitle}
   The job description is: ${jobDescription}
+
+  STRICT RULES:
+  1. Read the WHOLE resume before judging. NEVER suggest adding something that is already there (sections, skills, soft skills, projects, metrics, keywords, reverse-chronological order, PDF format).
+  2. Every tip must be specific to THIS resume: name or quote the exact line, skill or section it refers to and say exactly how to change it. Do not give generic advice such as "add metrics" or "use professional language" unless you point to a specific bullet that lacks it.
+  3. For the ATS score, compare the resume with the job description: say which important keywords from the job description are present and which are missing, naming them.
+  4. Score honestly and in proportion to how well the resume matches the job: a strong, well-matched resume should score high and a weak one low. Do not lower a score without a concrete reason you can name.
+  5. Write the tips in the same language as the resume.
+  6. Include both strengths (type "good") and real improvements (type "improve").
+
   Provide the feedback using the following format: ${AIResponseFormat}
   Return the analysis as a JSON object, without any other text and without the backticks.
   Do not include any other text or comments.`;
